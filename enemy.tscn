@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://4xhk1pks8fw0"]
+
+[ext_resource type="Script" path="res://Enemy.gd" id="1_ymgmu"]
+[ext_resource type="Texture2D" uid="uid://dwuhdo2hyuu60" path="res://PNG/Enemies/enemyBlack4.png" id="2_yw878"]
+[ext_resource type="PackedScene" uid="uid://dixat3e0du25f" path="res://e_laser.tscn" id="3_7pdtw"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q1hoe"]
+radius = 44.0
+height = 118.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xk83j"]
+radius = 896.943
+
+[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
+script = ExtResource("1_ymgmu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_yw878")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_q1hoe")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_xk83j")
+
+[node name="Egun" parent="." instance=ExtResource("3_7pdtw")]
+position = Vector2(48, 0)
+turret_speed = 5.075
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_DetectRadius_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_DetectRadius_body_exited"]

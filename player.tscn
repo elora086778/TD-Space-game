@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://cxbpe8605jfht"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_1i1xl"]
+[ext_resource type="Texture2D" uid="uid://c11eq3to0ley4" path="res://PNG/ufoRed.png" id="2_mmfpo"]
+[ext_resource type="PackedScene" uid="uid://bubplnqsje7tl" path="res://laser.tscn" id="2_xxbi7"]
+[ext_resource type="Texture2D" uid="uid://bv7faniyh53oc" path="res://PNG/Parts/gun03.png" id="3_bcit2"]
+[ext_resource type="Texture2D" uid="uid://cuehppa6olw4q" path="res://PNG/Lasers/laserRed10.png" id="5_qcx6j"]
+[ext_resource type="Texture2D" uid="uid://deedhhycaksws" path="res://PNG/Lasers/laserRed08.png" id="6_igpdo"]
+[ext_resource type="Texture2D" uid="uid://bb3jjkq2i4fln" path="res://PNG/Lasers/laserRed09.png" id="7_py3cm"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s50lo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_qcx6j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_igpdo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_py3cm")
+}],
+"loop": false,
+"name": &"fire",
+"speed": 15.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"load",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3nisw"]
+radius = 24.0
+
+[node name="Player" type="CharacterBody2D" groups=["Player", "player"]]
+script = ExtResource("1_1i1xl")
+Laser = ExtResource("2_xxbi7")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="CoolDown" type="Timer" parent="."]
+
+[node name="UfoRed" type="Sprite2D" parent="."]
+position = Vector2(-1.13687e-13, 0)
+scale = Vector2(0.461538, 0.395604)
+texture = ExtResource("2_mmfpo")
+
+[node name="gun" type="Sprite2D" parent="."]
+position = Vector2(23.407, 3.41601)
+scale = Vector2(0.758062, 0.580828)
+texture = ExtResource("3_bcit2")
+
+[node name="Muzzle" type="Marker2D" parent="gun"]
+position = Vector2(23.2079, -4.1596)
+
+[node name="Fire" type="AnimatedSprite2D" parent="gun/Muzzle"]
+position = Vector2(11.8724, 0)
+sprite_frames = SubResource("SpriteFrames_s50lo")
+animation = &"fire"
+autoplay = "fire"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_3nisw")
+
+[connection signal="timeout" from="CoolDown" to="." method="_on_cool_down_timeout"]
+[connection signal="animation_finished" from="gun/Muzzle/Fire" to="." method="_on_animated_sprite_2d_animation_finished"]

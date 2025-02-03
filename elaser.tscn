@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://b56v1wpa3qym1"]
+
+[ext_resource type="Script" path="res://elaser.gd" id="1_803k7"]
+[ext_resource type="PackedScene" uid="uid://cfkuru7adkjvf" path="res://explosion.tscn" id="2_6ogkm"]
+[ext_resource type="Texture2D" uid="uid://cspsw600joxty" path="res://PNG/Lasers/laserBlue14.png" id="3_1wu5f"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bo18h"]
+radius = 23.0217
+
+[node name="ELaser" type="Area2D"]
+script = ExtResource("1_803k7")
+ExplosionObj = ExtResource("2_6ogkm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bo18h")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 3.14159
+texture = ExtResource("3_1wu5f")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

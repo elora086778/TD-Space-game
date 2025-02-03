@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bubplnqsje7tl"]
+
+[ext_resource type="Script" path="res://Laser.gd" id="1_ofu3d"]
+[ext_resource type="PackedScene" uid="uid://cfkuru7adkjvf" path="res://explosion.tscn" id="2_fkv8g"]
+[ext_resource type="Texture2D" uid="uid://gexo6wiygc5l" path="res://PNG/Lasers/laserRed06.png" id="2_iw5wc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bo18h"]
+radius = 23.0217
+
+[node name="Laser" type="Area2D"]
+script = ExtResource("1_ofu3d")
+ExplosionObj = ExtResource("2_fkv8g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bo18h")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 3.14159
+texture = ExtResource("2_iw5wc")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

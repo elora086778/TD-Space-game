@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=3 uid="uid://dixat3e0du25f"]
+
+[ext_resource type="Script" path="res://e_laser.gd" id="1_3t111"]
+[ext_resource type="Texture2D" uid="uid://lqss8371n6b2" path="res://PNG/Parts/gun00.png" id="1_p1xdr"]
+[ext_resource type="PackedScene" uid="uid://b56v1wpa3qym1" path="res://elaser.tscn" id="2_heq7j"]
+[ext_resource type="Texture2D" uid="uid://cavi1hb5rslgo" path="res://PNG/Lasers/laserBlue11.png" id="4_rxudy"]
+[ext_resource type="Texture2D" uid="uid://d3vy325i3wu3a" path="res://PNG/Lasers/laserBlue10.png" id="5_yoxcw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cwido"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_rxudy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_yoxcw")
+}],
+"loop": false,
+"name": &"fire",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"load",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5uhva"]
+size = Vector2(34, 16)
+
+[node name="Egun" type="Area2D"]
+script = ExtResource("1_3t111")
+CbObj = ExtResource("2_heq7j")
+
+[node name="gun" type="Sprite2D" parent="."]
+texture = ExtResource("1_p1xdr")
+
+[node name="Muzzle" type="Marker2D" parent="gun"]
+position = Vector2(16, 0)
+
+[node name="Fire" type="AnimatedSprite2D" parent="gun/Muzzle"]
+position = Vector2(16, 0)
+sprite_frames = SubResource("SpriteFrames_cwido")
+animation = &"fire"
+autoplay = "fire"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 0)
+shape = SubResource("RectangleShape2D_5uhva")
+
+[node name="CoolDown" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[node name="DetectRadius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectRadius"]
+
+[node name="InSight" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="InSight"]
+polygon = PackedVector2Array(24, -8, 384, -64, 448, 0, 384, 64, 24, 8, 24, -1.82071)
+
+[connection signal="animation_finished" from="gun/Muzzle/Fire" to="." method="_on_fire_animation_finished"]
+[connection signal="body_entered" from="DetectRadius" to="." method="_on_DetectRadius_body_entered"]
+[connection signal="body_exited" from="DetectRadius" to="." method="_on_DetectRadius_body_exited"]
+[connection signal="body_entered" from="InSight" to="." method="_on_InSight_body_entered"]
+[connection signal="body_exited" from="InSight" to="." method="_on_InSight_body_exited"]
